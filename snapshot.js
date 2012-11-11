@@ -48,8 +48,7 @@ http.createServer(function (req, res) {
   }else if(urlParsed.query.url_fragment){
     console.log("Taking screenshot");
     takeSnapshot(urlFragment, function(output){
-      // output
-      res.write("output");
+      res.write(output);
       res.end();
     });
 
