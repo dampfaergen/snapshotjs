@@ -25,7 +25,7 @@ http.createServer(function (req, res) {
     var stripJavascript = stdOut.replace(/<script.*>.*<\/script>/g,'');
 
     // output
-    res.write(stdOut);
+    res.write(stripJavascript);
     res.end();
   });
 
