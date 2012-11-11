@@ -6,13 +6,13 @@ page.settings.loadImages = true;
 page.settings.localToRemoteUrlAccessEnabled = true;
 
 // add cookie to disable welcome message on homescreen
-page.addCookie({
+phantom.addCookie({
     'name': 'welcomeToBeta',
     'value': 'true',
     'domain': 'www.kobstaden.dk'
 });
 
-page.addCookie({
+phantom.addCookie({
     'name': 'welcomeToBeta',
     'value': 'true',
     'domain': 'snapshot.kobstaden.dk'
