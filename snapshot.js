@@ -57,7 +57,7 @@ http.createServer(function (req, res) {
   // do nothing
   }else{
     console.log("Doing nothing with: " + urlParsed.path);
-    res.end("Doing nothing with: " + urlParsed.path);
+    res.end("Doing nothing with test: " + urlParsed.path);
   }
 
 }).listen(9090, '127.0.0.1'); //.listen(9090, '178.79.137.106');
