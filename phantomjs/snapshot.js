@@ -6,7 +6,13 @@ page.settings.loadImages = false;
 page.settings.loadPlugins = true;
 
 // add cookie to disable welcome message on homescreen
-phantom.addCookie({
+page.addCookie({
+    'name': 'welcomeDismissed',
+    'value': 'true',
+    'domain': '.kobstaden.dk'
+});
+
+page.addCookie({
     'name': 'welcomeDismissed',
     'value': 'true',
     'domain': 'www.kobstaden.dk'
