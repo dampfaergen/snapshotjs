@@ -40,6 +40,9 @@ http.createServer(function (req, res) {
     console.log("Deploying app");
     var snapshot = exec("git pull origin master", function(error, stdOut, stdError){
       console.log(stdOut);
+      res.write("Deployed!");
+      res.write(stdError);
+      res.write(error);
       res.write(stdOut);
       res.end();
     });
