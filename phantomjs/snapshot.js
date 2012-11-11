@@ -3,16 +3,16 @@ var page = new WebPage(),
 
 page.settings.userAgent = 'Googlebot';
 page.settings.loadImages = false;
-page.settings.loadPlugins = true;
+page.settings.localToRemoteUrlAccessEnabled = true;
 
 // add cookie to disable welcome message on homescreen
-phantom.addCookie({
+page.addCookie({
     'name': 'welcomeToBeta',
     'value': 'true',
     'domain': 'www.kobstaden.dk'
 });
 
-phantom.addCookie({
+page.addCookie({
     'name': 'welcomeToBeta',
     'value': 'true',
     'domain': 'snapshot.kobstaden.dk'
