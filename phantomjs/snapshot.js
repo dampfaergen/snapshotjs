@@ -9,7 +9,7 @@ page.settings.loadPlugins = true;
 phantom.addCookie({
     'name': 'welcomeDismissed',
     'value': 'true',
-    'domain': '.kobstaden.dk'
+    'domain': 'www.kobstaden.dk'
 });
 
 if (phantom.args.length === 0) {
