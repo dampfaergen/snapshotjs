@@ -40,23 +40,23 @@ http.createServer(function (req, res) {
     console.log("Deploying app");
     var snapshot = exec("git pull origin master", function(error, stdOut, stdError){
       console.log(stdOut);
-      console.log(stdError);
+      res.write(stdOut);
+      res.end();
     });
-    res.end();
-
+    
   // take snapshot
   }else if(urlParsed.query.url_fragment){
     console.log("Taking screenshot");
     takeSnapshot(urlFragment, function(output){
       // output
-      res.write("output");
+      res.write(output);
       res.end();
     });
 
   // do nothing
   }else{
     console.log("Doing nothing with: " + urlParsed.path);
-    res.end();
+    res.end("Doing nothing with: " + urlParsed.path);
   }
 
 }).listen(9090, '127.0.0.1'); //.listen(9090, '178.79.137.106');
