@@ -1,9 +1,16 @@
 var page = new WebPage(),
     t, address;
 
-page.settings.userAgent = 'googlebot';
+page.settings.userAgent = 'Googlebot';
 page.settings.loadImages = false;
 page.settings.loadPlugins = true;
+
+// add cookie to disable welcome message on homescreen
+phantom.addCookie({
+    'name': 'welcomeDismissed',
+    'value': 'true',
+    'domain': '.kobstaden.dk'
+});
 
 if (phantom.args.length === 0) {
     console.log('Usage: snapshot.js <some URL>');
