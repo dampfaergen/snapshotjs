@@ -2,7 +2,7 @@ var page = new WebPage(),
     t, address;
 
 page.settings.userAgent = 'Googlebot';
-page.settings.loadImages = false;
+page.settings.loadImages = true;
 page.settings.localToRemoteUrlAccessEnabled = true;
 
 // add cookie to disable welcome message on homescreen
