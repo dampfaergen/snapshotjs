@@ -6,17 +6,24 @@ page.settings.loadImages = false;
 page.settings.loadPlugins = true;
 
 // add cookie to disable welcome message on homescreen
-page.addCookie({
+phantom.addCookie({
     'name': 'welcomeDismissed',
     'value': 'true',
     'domain': '.kobstaden.dk'
 });
 
-page.addCookie({
+phantom.addCookie({
     'name': 'welcomeDismissed',
     'value': 'true',
     'domain': 'www.kobstaden.dk'
 });
+
+var cookies = [{
+    'name': 'welcomeDismissed',
+    'value': 'true'
+}];
+page.setCookies(cookies);
+phantom.setCookies(cookies);
 
 if (phantom.args.length === 0) {
     console.log('Usage: snapshot.js <some URL>');
