@@ -49,7 +49,7 @@ http.createServer(function (req, res) {
     console.log("Taking screenshot");
     takeSnapshot(urlFragment, function(output){
       // output
-      res.write(output);
+      res.write("output");
       res.end();
     });
 
