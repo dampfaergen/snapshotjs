@@ -10,7 +10,7 @@ var takeSnapshot = function(urlFragment, callback){
 
   //Create url
   var full_url = "http://www.kobstaden.dk/#!" + urlFragment;
-  
+
   console.log("Taking snapshot of " + full_url);
 
   //Make snapshot
@@ -32,11 +32,11 @@ var takeSnapshot = function(urlFragment, callback){
 
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
-  
+
   //Get fragment
   var urlParsed = url.parse(req.url, true);
   var urlFragment = urlParsed.query.url_fragment;
-  
+
 
   // deploy new version
   if(urlParsed.query.deploy){
@@ -48,7 +48,7 @@ http.createServer(function (req, res) {
       res.write(stdOut);
       res.end();
     });
-    
+
   // take snapshot
   }else if(urlParsed.query.url_fragment){
     console.log("Taking screenshot");
@@ -63,4 +63,5 @@ http.createServer(function (req, res) {
     res.end("Doing nothing with: " + urlParsed.path);
   }
 
-}).listen(9090, '127.0.0.1'); //.listen(9090, '178.79.137.106');
+//}).listen(9090, '0.0.0.0');
+}).listen(9090, '127.0.0.1');
