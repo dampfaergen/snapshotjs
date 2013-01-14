@@ -14,14 +14,17 @@ var takeSnapshot = function(urlFragment, callback){
   console.log("Taking snapshot of " + full_url);
 
   //Make snapshot
-  var snapshot = exec("phantomjs phantomjs/snapshot.js '" + full_url + "'", function(error, stdOut, stdError){
+  var command = "phantomjs phantomjs/snapshot.js '" + full_url + "'";
+  console.log("Command " + command);
+  var snapshot = exec(command, function(error, stdOut, stdError){
     console.log("Returning answer");
+    console.log(stdOut);
 
     // add base url
-    stdOut = stdOut.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
+    stripBase = stdOut.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
 
     // remove javascript
-    var stripJavascript = stdOut.replace(/<script.*>.*<\/script>/g,'');
+    var stripJavascript = stripBase.replace(/<script.*>.*<\/script>/g,'');
 
     callback(stripJavascript);
   });
