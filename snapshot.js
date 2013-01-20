@@ -2,14 +2,14 @@ var http = require('http');
 var url = require("url");
 var exec = require("child_process").exec;
 
-var takeSnapshot = function(urlFragment, callback){
+var takeSnapshot = function(escapedFragment, callback){
 
-  if(!urlFragment){
-    urlFragment = "";
+  if(!escapedFragment){
+    escapedFragment = "";
   }
 
   //Create url
-  var full_url = "http://www.kobstaden.dk/#!" + urlFragment;
+  var full_url = "http://www.kobstaden.dk/#!" + escapedFragment;
 
   console.log("Taking snapshot of " + full_url);
 
@@ -35,7 +35,7 @@ http.createServer(function (req, res) {
 
   //Get fragment
   var urlParsed = url.parse(req.url, true);
-  var urlFragment = urlParsed.query.url_fragment;
+  var escapedFragment = urlParsed.query._escaped_fragment_;
 
 
   // deploy new version
@@ -50,9 +50,9 @@ http.createServer(function (req, res) {
     });
 
   // take snapshot
-  }else if(urlParsed.query.url_fragment){
+  }else if(urlParsed.query._escaped_fragment_){
     console.log("Taking screenshot");
-    takeSnapshot(urlFragment, function(output){
+    takeSnapshot(escapedFragment, function(output){
       res.write(output);
       res.end();
     });
@@ -63,5 +63,5 @@ http.createServer(function (req, res) {
     res.end("Doing nothing with: " + urlParsed.path);
   }
 
-//}).listen(9090, '0.0.0.0');
-}).listen(9090, '127.0.0.1');
+}).listen(9090, '0.0.0.0');
+//}).listen(9090, '127.0.0.1');
