@@ -25,8 +25,9 @@ var takeSnapshot = function(escapedFragment, callback){
 
     // remove javascript
     var stripJavascript = stripBase.replace(/<script.*>.*<\/script>/g,'');
+    var addRedirect = stripJavascript.replace('<head>','<head><script type="text/javascript">window.location = "' + full_url +'"</script>');
 
-    callback(stripJavascript);
+    callback(addRedirect);
   });
 };
 
