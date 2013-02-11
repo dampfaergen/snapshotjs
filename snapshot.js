@@ -12,11 +12,12 @@ var takeSnapshot = function(escapedFragment, callback){
     escapedFragment = "";
   }
 
-  // Create url
+  //Create url
   var full_url = "http://www.kobstaden.dk/#!" + escapedFragment;
+
   console.log("Taking snapshot of " + full_url);
 
-  // Make snapshot
+  //Make snapshot
   var command = "phantomjs phantomjs/snapshot.js '" + full_url + "'";
   console.log("Command " + command);
   var snapshot = exec(command, function(error, stdOut, stdError){
@@ -28,9 +29,8 @@ var takeSnapshot = function(escapedFragment, callback){
 
     // remove javascript
     var stripJavascript = stripBase.replace(/<script.*>.*<\/script>/g,'');
-    var addRedirect = stripJavascript.replace('<head>','<head><script type="text/javascript">window.location = "' + full_url +'"</script>');
 
-    callback(addRedirect);
+    callback(stripJavascript);
   });
 };
 
