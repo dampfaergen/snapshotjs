@@ -1,7 +1,3 @@
-require('nodetime').profile({
-    accountKey: '518c64ed5487c562d52d52024856585eca4e59b5', 
-    appName: 'Snapshot nodejs Server'
-});
 var http = require('http');
 var url = require("url");
 var exec = require("child_process").exec;
