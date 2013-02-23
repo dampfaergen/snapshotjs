@@ -2,7 +2,7 @@ var http = require('http');
 var url = require("url");
 var exec = require("child_process").exec;
 
-var takeSnapshot = function(escapedFragment, callback){
+var takeSnapshot = function(escapedFragment, redirectClient, callback){
 
   if(!escapedFragment){
     escapedFragment = "";
@@ -21,13 +21,17 @@ var takeSnapshot = function(escapedFragment, callback){
     console.log(stdOut);
 
     // add base url
-    stripBase = stdOut.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
+    var output = stdOut.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
 
     // remove javascript
-    var stripJavascript = stripBase.replace(/<script.*>.*<\/script>/g,'');
-    var addRedirect = stripJavascript.replace('<head>','<head><script type="text/javascript">window.location = "' + full_url +'"</script>');
+    output = output.replace(/<script.*>.*<\/script>/g,'');
 
-    callback(addRedirect);
+    // add redirect
+    if(redirectClient !== "false"){
+      output = output.replace('<head>','<head><script type="text/javascript">window.location = "' + full_url +'"</script>');
+    }
+
+    callback(output);
   });
 };
 
@@ -37,6 +41,7 @@ http.createServer(function (req, res) {
   //Get fragment
   var urlParsed = url.parse(req.url, true);
   var escapedFragment = urlParsed.query._escaped_fragment_;
+  var redirectClient = urlParsed.query.redirect_client;
 
 
   // deploy new version
@@ -53,7 +58,7 @@ http.createServer(function (req, res) {
   // take snapshot
   }else if(urlParsed.query._escaped_fragment_){
     console.log("Taking screenshot");
-    takeSnapshot(escapedFragment, function(output){
+    takeSnapshot(escapedFragment, redirectClient, function(output){
       res.write(output);
       res.end();
     });
