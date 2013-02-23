@@ -41,7 +41,7 @@ http.createServer(function (req, res) {
   //Get fragment
   var urlParsed = url.parse(req.url, true);
   var escapedFragment = urlParsed.query._escaped_fragment_;
-  var redirectClient = urlParsed.query.redirect_client;
+  var redirectClient = urlParsed.query._redirect_client_;
 
 
   // deploy new version
