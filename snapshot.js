@@ -8,17 +8,16 @@ var takeSnapshot = function(escapedFragment, redirectClient, callback){
     escapedFragment = "";
   }
 
-  //Create url
+  // Create url
   var full_url = "http://www.kobstaden.dk/#!" + escapedFragment;
 
   console.log("Taking snapshot of " + full_url);
 
-  //Make snapshot
+  // Make snapshot
   var command = "phantomjs phantomjs/snapshot.js '" + full_url + "'";
   console.log("Command " + command);
   var snapshot = exec(command, function(error, stdOut, stdError){
     console.log("Returning answer");
-    console.log(stdOut);
 
     // add base url
     var output = stdOut.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
@@ -36,8 +35,6 @@ var takeSnapshot = function(escapedFragment, redirectClient, callback){
 };
 
 http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-
   //Get fragment
   var urlParsed = url.parse(req.url, true);
   var escapedFragment = urlParsed.query._escaped_fragment_;
@@ -46,6 +43,7 @@ http.createServer(function (req, res) {
 
   // deploy new version
   if(urlParsed.query.deploy){
+    res.writeHead(200, {'Content-Type': 'text/html'});
     console.log("Deploying app");
     exec("git pull origin master", function(error, stdOut, stdError){
       console.log(stdOut);
@@ -59,14 +57,15 @@ http.createServer(function (req, res) {
   }else if(urlParsed.query._escaped_fragment_){
     console.log("Taking screenshot");
     takeSnapshot(escapedFragment, redirectClient, function(output){
-      res.write(output);
-      res.end();
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end(output);
     });
 
   // do nothing
   }else{
-    console.log("Doing nothing with: " + urlParsed.path);
-    res.end("Doing nothing with: " + urlParsed.path);
+    console.log("_escaped_fragment_ not set");
+    res.writeHead(404, {'Content-Type': 'text/html'});
+    res.end("_escaped_fragment_ not set :( - Please visit kobstaden.dk");
   }
 
 }).listen(9090, '0.0.0.0');
