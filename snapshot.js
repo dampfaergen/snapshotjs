@@ -1,38 +1,7 @@
 var http = require('http');
 var url = require("url");
-var exec = require("child_process").exec;
-
-var takeSnapshot = function(escapedFragment, redirectClient, callback){
-
-  if(!escapedFragment){
-    escapedFragment = "";
-  }
-
-  // Create url
-  var full_url = "http://www.kobstaden.dk/#!" + escapedFragment;
-
-  console.log("Taking snapshot of " + full_url);
-
-  // Make snapshot
-  var command = "phantomjs phantomjs/snapshot.js '" + full_url + "'";
-  console.log("Command " + command);
-  var snapshot = exec(command, function(error, stdOut, stdError){
-    console.log("Returning answer");
-
-    // add base url
-    var output = stdOut.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
-
-    // remove javascript
-    output = output.replace(/<script.*>.*<\/script>/g,'');
-
-    // add redirect
-    if(redirectClient !== "false"){
-      output = output.replace('<head>','<head><script type="text/javascript">window.location = "' + full_url +'"</script>');
-    }
-
-    callback(output);
-  });
-};
+//var exec = require("child_process").exec;
+var spawn = require('child_process').spawn;
 
 http.createServer(function (req, res) {
   //Get fragment
@@ -54,16 +23,54 @@ http.createServer(function (req, res) {
     });
 
   // take snapshot
-  }else if(urlParsed.query._escaped_fragment_){
-    console.log("Taking screenshot");
-    takeSnapshot(escapedFragment, redirectClient, function(output){
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end(output);
+  }else if(escapedFragment){
+
+    // Create url
+    var fullUrl = "http://www.kobstaden.dk/#!" + escapedFragment;
+
+    console.log("Taking snapshot of " + fullUrl);
+
+    // Make snapshot
+    var args = ["phantomjs/snapshot.js", fullUrl];
+    console.log("Arguments " + args);
+
+    var phantomjs = spawn('phantomjs', args);
+    var phantomData = "";
+    phantomjs.stdout.on('data', function(chunk) {
+      phantomData += chunk;
+      console.log("Receiving data chunk");
+    });
+
+    // add an 'end' event listener to close the writeable stream
+    phantomjs.stdout.on('end', function() {
+        console.log("Finished receiving from phantom");
+        // add base url
+        var output = phantomData.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
+
+        // remove javascript
+        output = output.replace(/<script.*>.*<\/script>/g,'');
+
+        // add redirect
+        if(redirectClient !== "false"){
+          output = output.replace('<head>','<head><script type="text/javascript">window.location = "' + fullUrl +'"</script>');
+        }
+        //console.log(output);
+
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(output);
+    });
+
+    // when the spawn child process exits, check if there were any errors and close the writeable stream
+    phantomjs.on('exit', function(code) {
+        if (code !== 0) {
+            console.log('Failed: ' + code);
+        }
+        //this.disconnect();
     });
 
   // do nothing
   }else{
-    console.log("_escaped_fragment_ not set");
+    console.log("_escaped_fragment_ not set for: " + req.url);
     res.writeHead(404, {'Content-Type': 'text/html'});
     res.end("_escaped_fragment_ not set :( - Please visit kobstaden.dk");
   }
