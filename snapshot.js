@@ -27,6 +27,7 @@ http.createServer(function (req, res) {
 
     // Create url
     var fullUrl = "http://kobstaden-hrd.appspot.com/?agent_is_snapshot=true#!" + escapedFragment;
+    var fullUrlHuman = "http://www.kobstaden.dk/#!" + escapedFragment;
 
     console.log("Taking snapshot of " + fullUrl);
 
@@ -52,7 +53,7 @@ http.createServer(function (req, res) {
 
         // add redirect
         if(redirectClient !== "false"){
-          output = output.replace('<head>','<head><script type="text/javascript">window.location = "' + fullUrl +'"</script>');
+          output = output.replace('<head>','<head><script type="text/javascript">window.location = "' + fullUrlHuman +'"</script>');
         }
         //console.log(output);
 
