@@ -26,7 +26,7 @@ http.createServer(function (req, res) {
   }else if(escapedFragment){
 
     // Create url
-    var fullUrl = "http://kobstaden-hrd.appspot.com/?disable_third_party=true#!" + escapedFragment;
+    var fullUrl = "http://kobstaden-hrd.appspot.com/?agent_is_snapshot=true#!" + escapedFragment;
 
     console.log("Taking snapshot of " + fullUrl);
 
