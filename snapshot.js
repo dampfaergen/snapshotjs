@@ -49,7 +49,7 @@ http.createServer(function (req, res) {
         var output = phantomData.replace('<head>', '<head><base href="http://www.kobstaden.dk">');
 
         // remove javascript
-        output = output.replace(/<script.*>.*<\/script>/g,'');
+        output = output.replace(/<script.*?>[\s\S]*?<\/.*?script>/g,'');
 
         // add redirect
         if(redirectClient !== "false"){

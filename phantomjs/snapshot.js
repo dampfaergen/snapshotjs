@@ -1,7 +1,7 @@
 var page = new WebPage(),
 	address;
 
-page.settings.userAgent = 'Googlebot';
+page.settings.userAgent = 'Snapshot Bot';
 page.settings.loadImages = true;
 page.settings.localToRemoteUrlAccessEnabled = true;
 
