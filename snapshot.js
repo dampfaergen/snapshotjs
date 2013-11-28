@@ -26,8 +26,8 @@ http.createServer(function (req, res) {
   }else if(escapedFragment){
 
     // Create url
-    var fullUrl = "http://kobstaden-hrd.appspot.com/?agent_is_snapshot=true#!" + escapedFragment;
-    var fullUrlHuman = "http://www.kobstaden.dk/#!" + escapedFragment;
+    var fullUrl = "http://norsksans.appspot.com/?agent_is_snapshot=true#!" + escapedFragment;
+    var fullUrlHuman = "http://www.norsksans.no/#!" + escapedFragment;
 
     console.log("Taking snapshot of " + fullUrl);
 
@@ -76,5 +76,5 @@ http.createServer(function (req, res) {
     res.end("_escaped_fragment_ not set :( - Please visit kobstaden.dk");
   }
 
-}).listen(9090, '0.0.0.0');
+}).listen(8080, '127.0.0.1');
 //}).listen(9090, '127.0.0.1');
