@@ -76,5 +76,5 @@ http.createServer(function (req, res) {
     res.end("_escaped_fragment_ not set :( - Please visit kobstaden.dk");
   }
 
-}).listen(8080, '0.0.0.0');
+}).listen(8080, '127.0.0.1');
 //}).listen(9090, '127.0.0.1');
